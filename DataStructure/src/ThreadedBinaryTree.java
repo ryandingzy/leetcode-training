@@ -1,68 +1,47 @@
-public class BinaryTree {
-    private BTNode root;
-    public void setRoot(BTNode root)
+public class ThreadedBinaryTree {
+    private TBTNode root;
+
+    private TBTNode pre = null;
+
+    public void setRoot(TBTNode root)
     {
         this.root = root;
     }
 
-    public void preOrder() {
-        if (this.root != null) {
-            this.root.preOrder();
-        } else {
-            System.out.println("Empty");
+    /**
+     *
+     * @param node the node to be threaded
+     */
+    public void threadedNodes(TBTNode node) {
+        if (node == null) {
+            return;
         }
-    }
-
-    public void infixOrder() {
-        if (this.root != null) {
-            this.root.infixOrder();
-        } else {
-            System.out.println("Empty");
+        threadedNodes(node.getLeft());
+        if (node.getLeft() == null) {
+            node.setLeft(pre);
+            node.setLeftType(true);
         }
-    }
-
-    public void postOrder() {
-        if (this.root != null) {
-            this.root.postOrder();
-        } else {
-            System.out.println("Empty");
+        if (pre.getRight() == null) {
+            pre.setRight(node);
+            pre.setRightType(true);
         }
-    }
-
-    // search
-    public BTNode preOrderSearch(int id) {
-        if (root != null) {
-            return root.preOrderSearch(id);
-        } else {
-            return null;
-        }
-    }
-
-    public void delNode(int id) {
-        if (root != null) {
-            if (root.getId() == id) {
-                root = null;
-            } else {
-                root.delNode(id);
-            }
-        } else {
-            System.out.println("Empty");
-        }
+        pre = node;
+        threadedNodes(node.getRight());
     }
 }
 
-class BTNode {
+class TBTNode {
     private int id;
     private int data;
-    private BTNode left;
-    private BTNode right;
+    private TBTNode left;
+    private TBTNode right;
 
     // false--child, true--pre
     private boolean leftType;
     // false--child, true--post
     private boolean rightType;
 
-    public BTNode(int id, int data) {
+    public TBTNode(int id, int data) {
         this.id = id;
         this.data = data;
     }
@@ -81,6 +60,38 @@ class BTNode {
 
     public void setData(int data) {
         this.data = data;
+    }
+
+    public TBTNode getLeft() {
+        return left;
+    }
+
+    public void setLeft(TBTNode left) {
+        this.left = left;
+    }
+
+    public TBTNode getRight() {
+        return right;
+    }
+
+    public void setRight(TBTNode right) {
+        this.right = right;
+    }
+
+    public boolean isLeftType() {
+        return leftType;
+    }
+
+    public void setLeftType(boolean leftType) {
+        this.leftType = leftType;
+    }
+
+    public boolean isRightType() {
+        return rightType;
+    }
+
+    public void setRightType(boolean rightType) {
+        this.rightType = rightType;
     }
 
     public void preOrder() {
@@ -102,12 +113,12 @@ class BTNode {
     }
 
     // search
-    public BTNode preOrderSearch(int id) {
+    public TBTNode preOrderSearch(int id) {
         if (this.id == id) {
             return this;
         }
 
-        BTNode res = null;
+        TBTNode res = null;
         // left
         if (this.left != null) {
             res = this.left.preOrderSearch(id);

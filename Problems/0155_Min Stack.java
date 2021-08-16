@@ -61,6 +61,8 @@ class MinStack {
  * int param_4 = obj.getMin();
  */
 
+
+// Better solution
  class MinStack {
     Deque<Integer> xStack;
     Deque<Integer> minStack;

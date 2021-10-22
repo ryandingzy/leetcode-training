@@ -38,3 +38,6 @@ class Solution {
         return true;
     }
 }
+
+
+// 也可以通过hashmap找对应点的方法，判断中线的有效性。hashmap可以有助于去重复
